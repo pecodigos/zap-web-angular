@@ -1,0 +1,47 @@
+<div class="chat-container">
+  <div class="sidebar">
+    <!-- Search bar for chats -->
+    <mat-form-field class="search-bar" appearance="fill">
+      <mat-label>Search chats</mat-label>
+      <input matInput type="text" placeholder="Search chats..." [(ngModel)]="searchTerm" (input)="filterChats()" />
+    </mat-form-field>
+
+    <!-- Chat list -->
+    <mat-list class="chat-list" *ngIf="!showUserSearchResults">
+      <div *ngFor="let chat of filteredChats" (click)="selectChat(chat)" class="chat-item">
+        <div class="chat-info">
+          <h4 matLine class="chat-name">{{ chat.name }}</h4>
+          <p matLine class="last-message">{{ chat.lastMessage || 'No messages yet' }}</p>
+        </div>
+      </div>
+    </mat-list>
+
+    <!-- User list for starting new conversations -->
+    <mat-list class="user-list" *ngIf="showUserSearchResults">
+      <div *ngFor="let user of filteredUsers" (click)="startNewConversation(user)" class="user-item">
+        <mat-list-item>
+          <div class="user-info">
+            <h4 matLine class="user-name">{{ user.name }}</h4>
+          </div>
+        </mat-list-item>
+      </div>
+    </mat-list>
+  </div>
+
+  <!-- Chat area -->
+  <div class="chat-area" *ngIf="activeChat">
+    <mat-toolbar class="chat-header">・{{ activeChat.name }}</mat-toolbar>
+    <div #chatContainer class="chat-messages">
+      <div class="message" *ngFor="let message of activeChat.messages" [ngClass]="{'sent': message.senderId === userId}">
+        {{ message.text }}
+      </div>
+    </div>
+    <div class="message-input" style="display: flex; align-items: center;">
+      <mat-form-field appearance="outline" class="message-field" style="flex-grow: 1; margin-right: 8px;">
+        <mat-label>Type a message</mat-label>
+        <input matInput type="text" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" />
+      </mat-form-field>
+      <button mat-raised-button (click)="sendMessage()" color="primary">Send</button>
+    </div>
+  </div>
+</div>

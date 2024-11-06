@@ -1,0 +1,12 @@
+<mat-toolbar class="spacer" color="accent">
+  <a mat-button routerLink="/" href="/"><img src="../favicon.ico" class="logo"></a>
+  <div *ngIf="!isLoggedIn" class="login-register">
+    <a mat-button routerLink="/login" href="/login">Login</a>
+    <a mat-button routerLink="/register" href="/register">Register</a>
+  </div>
+  <div *ngIf="isLoggedIn">
+    <button mat-button (click)="onLogout()">Logout</button>
+  </div>
+</mat-toolbar>
+<router-outlet></router-outlet>
+

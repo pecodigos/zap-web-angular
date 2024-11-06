@@ -1,0 +1,33 @@
+* {
+  color: white;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-container, .credits-container, .chat-container {
+  margin: 1.5rem;
+  font-size: 1.3rem;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(136, 179, 194);
+}
+
+.main-mat-card {
+  margin-top: 7rem;
+  width: 35%;
+  background-color: #1f1e1e;
+}
+
+.chat-a-tag {
+  color: yellow;
+  text-decoration: underline;
+}
+
+
