@@ -1,10 +1,9 @@
-import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Client, IMessage, IStompSocket } from '@stomp/stompjs';
+import { Client, IMessage } from '@stomp/stompjs';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Message } from '../message/message.model';
-import SockJS from 'sockjs-client';
 
+// Using the native WebSocket API to replace SockJS
 @Injectable({
   providedIn: 'root',
 })
@@ -14,25 +13,24 @@ export class WebSocketService {
   private activeChatRooms: string[] = [];
 
   constructor() {
+    // WebSocket URL
+    const socketUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//www.zapweb.shop/chat`;
+
+    // Initialize STOMP Client
     this.stompClient = new Client({
+      brokerURL: socketUrl, // WebSocket URL
       connectHeaders: {},
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
+      webSocketFactory: () => new WebSocket(socketUrl),
     });
-
-    // WebSocket factory using SockJS for fallbacks
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socketUrl = `${protocol}//www.zapweb.shop/chat`;
-    this.stompClient.webSocketFactory = () => {
-      return new SockJS(socketUrl) as IStompSocket;
-    }
 
     // Connection callback
     this.stompClient.onConnect = () => {
       console.log('Connected to WebSocket server');
-      this.resubscribeToActiveChats(); // Resubscribe if reconnected
+      this.resubscribeToActiveChats();
     };
 
     // Error handling for connection issues
@@ -41,13 +39,13 @@ export class WebSocketService {
       console.error('Additional details: ' + frame.body);
     };
 
-    // Activation of the STOMP client
+    // Activate the STOMP client (connect to WebSocket)
     this.stompClient.activate();
   }
 
   subscribeToChatRoom(chatRoomId: string): Observable<Message[]> {
     if (!this.messageSubjects[chatRoomId]) {
-      this.messageSubjects[chatRoomId] = new BehaviorSubject<Message[]>([]); // Initialize with an empty array
+      this.messageSubjects[chatRoomId] = new BehaviorSubject<Message[]>([]);
       this.activeChatRooms.push(chatRoomId);
 
       // Subscribe to the chat room topic

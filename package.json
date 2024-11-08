@@ -26,6 +26,7 @@
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
     "tslib": "^2.3.0",
+    "webstomp-client": "^1.2.6",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
