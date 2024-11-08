@@ -23,7 +23,11 @@ export class WebSocketService {
     });
 
     // WebSocket factory using SockJS for fallbacks
-    this.stompClient.webSocketFactory = () => new SockJS('https://www.zapweb.shop/chat') as IStompSocket;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const socketUrl = `${protocol}//www.zapweb.shop/chat`;
+    this.stompClient.webSocketFactory = () => {
+      return new SockJS(socketUrl) as IStompSocket;
+    }
 
     // Connection callback
     this.stompClient.onConnect = () => {
