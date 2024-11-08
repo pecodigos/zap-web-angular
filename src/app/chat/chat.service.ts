@@ -9,8 +9,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ChatService {
-  private chatApiUrl = `${environment.apiUrl}/api/chat`;
-  private messageApiUrl = `${environment.apiUrl}/api/messages`;
+  private chatApiUrl = `/api/chat`;
+  private messageApiUrl = `/api/messages`;
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +37,6 @@ export class ChatService {
 
   // Get all users
   getUsers(): Observable<{ id: string, name: string }[]> {
-    return this.http.get<{ id: string, name: string }[]>(`${environment.apiUrl}/api/users/`);
+    return this.http.get<{ id: string, name: string }[]>(`/api/users/`);
   }
 }

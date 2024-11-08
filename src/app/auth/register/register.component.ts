@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     MatFormField,
     MatLabel,
-    RouterOutlet,
     FormsModule,
     MatInputModule,
     MatCardModule,
