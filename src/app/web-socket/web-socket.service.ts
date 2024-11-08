@@ -15,7 +15,6 @@ export class WebSocketService {
 
   constructor() {
     this.stompClient = new Client({
-      brokerURL: `wss://zapweb.shop`,
       connectHeaders: {},
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
@@ -24,7 +23,7 @@ export class WebSocketService {
     });
 
     // WebSocket factory using SockJS for fallbacks
-    this.stompClient.webSocketFactory = () => new SockJS('https://zapweb.shop/chat') as IStompSocket;
+    this.stompClient.webSocketFactory = () => new SockJS('https://www.zapweb.shop/chat') as IStompSocket;
 
     // Connection callback
     this.stompClient.onConnect = () => {
