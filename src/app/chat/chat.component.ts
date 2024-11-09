@@ -81,20 +81,26 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   private loadUsers() {
-    this.chatService.getUsers().subscribe(
-      (users) => (this.users = users),
-      (error) => console.log('Failed to load users:', error)
-    );
+    this.chatService.getUsers().subscribe({
+      next: (users: { id: string; name: string }[]) => {
+        console.log('Users loaded: ', users);
+        this.users = users;
+      },
+      error: (error: any) => console.error('Failed to load users:', error)
+    });
   }
 
   private getUserId() {
-    this.authService.isLoggedIn().subscribe(isLoggedIn => {
-      if (isLoggedIn) {
+    this.authService.isLoggedIn().subscribe({
+      next: (isLoggedIn: boolean) => {
+        if (isLoggedIn) {
         this.userId = localStorage.getItem('userId') || '';
-      } else {
-        console.error('User is not logged in.');
-      }
-    });
+        } else {
+          console.error('User is not logged in.');
+        }
+      },
+      error: (error: any) => console.error()
+   });
   }
 
   getUserNameById(userId: string): string {
