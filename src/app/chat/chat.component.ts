@@ -83,7 +83,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   private loadUsers() {
     this.chatService.getUsers().subscribe({
       next: (users: { id: string; name: string }[]) => {
-        console.log('Users loaded: ', users);
         this.users = users;
       },
       error: (error: any) => console.error('Failed to load users:', error)
@@ -147,8 +146,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     );
 
     this.filteredUsers = this.users.filter(user => user.name.toLowerCase().includes(term));
-
-    console.log('Filtered Users:', this.filteredUsers);
     this.showUserSearchResults = this.filteredChats.length === 0 && this.filteredUsers.length > 0;
   }
 
@@ -165,8 +162,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
     if (!user) return;
 
-    console.log('USER --> ', user);
-    console.log('Starting chat with user:', user.id);
     this.chatService.createOrFetchChatWithUser(this.userId, user.id).subscribe({
       next: (chat) => {
         this.chats.push(chat);

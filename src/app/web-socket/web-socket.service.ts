@@ -65,7 +65,6 @@ export class WebSocketService implements OnDestroy {
   }
 
   sendMessage(message: Message, chatRoomId: string) {
-    console.log(`Sending message to chat room ${chatRoomId}:`, message);
     try {
       this.stompClient.publish({
         destination: `/app/chat-room/${chatRoomId}/sendMessage`,

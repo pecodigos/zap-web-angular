@@ -12,12 +12,10 @@ export class ChatService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all chat rooms
   getChats(): Observable<Chat[]> {
     return this.http.get<Chat[]>(`${this.baseUrl}/chats/`);
   }
 
-  // Get messages for a specific chat room by ID
   getMessages(chatId: string): Observable<Message[]> {
     return this.http.get<Message[]>(`${this.baseUrl}/messages/${chatId}`);
   }
@@ -26,7 +24,6 @@ export class ChatService {
     return this.http.get<Chat[]>(`${this.baseUrl}/chats/user/${userId}`);
   }
 
-  // Create or fetch chat with a user
   createOrFetchChatWithUser(userOneId: string, userTwoId: string): Observable<Chat> {
     const payload = { userOneId, userTwoId };
 
