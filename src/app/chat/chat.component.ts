@@ -155,8 +155,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       console.error('Current user ID is not available.');
       return;
     }
+    if (!user) return;
 
-    console.log('Starting chat with user:', user.id); // Add a log to debug
+    console.log('USER --> ', user);
+    console.log('Starting chat with user:', user.id);
     this.chatService.createOrFetchChatWithUser(this.userId, user.id).subscribe({
       next: (chat) => {
         this.chats.push(chat);
