@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ChatService {
-  private chatApiUrl = `/api/chat`;
+  private chatApiUrl = `/api/chats`;
   private messageApiUrl = `/api/messages`;
 
   constructor(private http: HttpClient) {}
