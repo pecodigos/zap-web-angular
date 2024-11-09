@@ -99,7 +99,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   getUserNameById(userId: string): string {
     const user = this.users.find(user => user.id === userId);
-    return user ? user.name : 'Unknown User';
+    return user ? user.name : 'A Fella: ';
   }
 
   loadChats() {
@@ -133,7 +133,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-
   filterChats() {
     const term = this.searchTerm.toLowerCase();
     this.filteredChats = this.chats.filter(chat =>
@@ -157,6 +156,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       return;
     }
 
+    console.log('Starting chat with user:', user.id); // Add a log to debug
     this.chatService.createOrFetchChatWithUser(this.userId, user.id).subscribe({
       next: (chat) => {
         this.chats.push(chat);
@@ -186,7 +186,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
   determineContentType(content: string): ContentType {
     const imageUrlPattern = /\.(jpeg|jpg|gif|png)$/i;
