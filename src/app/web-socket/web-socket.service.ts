@@ -29,15 +29,6 @@ export class WebSocketService implements OnDestroy {
       this.resubscribeToActiveChats();
     };
 
-    this.stompClient.onStompError = (frame) => {
-      console.error('Broker reported error:', frame.headers['message']);
-      console.error('Additional details:', frame.body);
-    };
-
-    this.stompClient.onWebSocketError = (error) => {
-      console.error('WebSocket connection error:', error);
-    };
-
     this.stompClient.onWebSocketClose = () => {
       console.warn('WebSocket connection closed');
     };
@@ -55,8 +46,6 @@ export class WebSocketService implements OnDestroy {
       this.stompClient.subscribe(`/topic/chat-rooms/${chatRoomId}`, (message: IMessage) => {
         this.onMessageReceived(chatRoomId, message);
       });
-
-      console.log(`Subscribed to chat room: ${chatRoomId}`);
     }
 
     return this.messageSubjects[chatRoomId].asObservable();

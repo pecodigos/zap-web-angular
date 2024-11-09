@@ -15,7 +15,6 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     MatFormField,
     MatLabel,
-    RouterOutlet,
     FormsModule,
     MatInputModule,
     MatCardModule,
