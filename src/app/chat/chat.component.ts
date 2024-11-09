@@ -147,6 +147,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     );
 
     this.filteredUsers = this.users.filter(user => user.name.toLowerCase().includes(term));
+
+    console.log('Filtered Users:', this.filteredUsers);
     this.showUserSearchResults = this.filteredChats.length === 0 && this.filteredUsers.length > 0;
   }
 
