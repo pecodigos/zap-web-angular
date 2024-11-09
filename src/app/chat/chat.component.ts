@@ -105,24 +105,34 @@ export class ChatComponent implements OnInit, OnDestroy {
   loadChats() {
     if (!this.userId) return;
 
-    this.chatService.getChatRoomsForUser(this.userId).subscribe(
-      (chats) => {
+    this.chatService.getChatRoomsForUser(this.userId).subscribe({
+      next: (chats) => {
         this.chats = chats.map(chat => {
-          this.chatService.getMessages(chat.id).subscribe((messages) => {
-            chat.messages = messages.map(msg => {
-              msg.text = this.encryptionService.decrypt(msg.text);
-              return msg;
-            });
-            const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-            chat.lastMessage = lastMessage ? `${lastMessage.senderId === this.userId ? 'You' : this.getUserNameById(lastMessage.senderId)}: ${lastMessage.text}` : 'No messages yet';
+          this.chatService.getMessages(chat.id).subscribe({
+            next: (messages) => {
+              chat.messages = messages.map(msg => {
+                msg.text = this.encryptionService.decrypt(msg.text);
+                return msg;
+              });
+              const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+              chat.lastMessage = lastMessage
+                ? `${lastMessage.senderId === this.userId ? 'You' : this.getUserNameById(lastMessage.senderId)}: ${lastMessage.text}`
+                : 'No messages yet';
+            },
+            error: (error) => {
+              console.error('Failed to load messages for chat:', chat.id, error);
+            }
           });
           return chat;
         });
         this.filteredChats = this.chats;
       },
-      (error) => console.error('Failed to load chats:', error)
-    );
+      error: (error) => {
+        console.error('Failed to load chats:', error);
+      }
+    });
   }
+
 
   filterChats() {
     const term = this.searchTerm.toLowerCase();
@@ -147,8 +157,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.chatService.createOrFetchChatWithUser(this.userId, user.id).subscribe(
-      (chat) => {
+    this.chatService.createOrFetchChatWithUser(this.userId, user.id).subscribe({
+      next: (chat) => {
         this.chats.push(chat);
         this.setActiveChat(chat);
         this.loadMessages(chat);
@@ -156,22 +166,27 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.showUserSearchResults = false;
         this.setupWebSocketListener();
       },
-      (error) => console.error('Failed to start conversation:', error)
-    );
+      error: (error) => {
+        console.error('Failed to start conversation:', error);
+      }
+    });
   }
 
   private loadMessages(chat: Chat) {
-    this.chatService.getMessages(chat.id).subscribe(
-      (messages) => {
+    this.chatService.getMessages(chat.id).subscribe({
+      next: (messages) => {
         chat.messages = messages.map(msg => {
           msg.text = this.encryptionService.decrypt(msg.text);
           return msg;
         });
         this.setActiveChat(chat);
       },
-      (error) => console.error('Failed to load messages:', error)
-    );
+      error: (error) => {
+        console.error('Failed to load messages:', error);
+      }
+    });
   }
+
 
   determineContentType(content: string): ContentType {
     const imageUrlPattern = /\.(jpeg|jpg|gif|png)$/i;
