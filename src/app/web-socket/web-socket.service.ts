@@ -14,7 +14,7 @@ export class WebSocketService {
 
   constructor() {
     // WebSocket URL
-    const socketUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//www.zapweb.shop/chat`;
+    const socketUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//api.zapweb.shop/chat`;
 
     // Initialize STOMP Client
     this.stompClient = new Client({
